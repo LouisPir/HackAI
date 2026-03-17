@@ -1,35 +1,52 @@
-Technical Documentation — HR Retention AI
+TECHNICAL DOCUMENTATION HR RETENTION AI
+PROJECT OVERVIEW
 
-1. Technical stack
-The project is built with a simple and modern stack. The frontend uses React with Vite for fast development and React Router for navigation between pages. For data processing, Python is used with libraries such as pandas and numpy to manipulate and prepare the HR dataset.
+This project aims to build a simple and explainable tool to estimate employee turnover risk using HR data. The goal is to help HR teams identify employees who may be at risk of leaving and take preventive actions. The system is based on a proxy target variable: Termd = 0 → employee still active, Termd = 1 → employee has left. The tool is designed as a decision-support system, not an automated decision-maker.
 
-2. Technical structure
-The main application is located in the frontend-app/ folder. The key files include main.jsx, which is the React entry point, and App.jsx, which contains the main application logic. The global styles are defined in index.css, and most of the business logic related to data is implemented in data.js.
-On the data side, the script dataset/Remplissage.py is used to merge and enrich the HR datasets.
+DATASET
 
-3. Application workflow
-When the application starts, the dataset is first loaded using the loadDataset() function. Then, global analytics are computed with computeAnalytics(data), and the results are displayed in both the Home page and the Analytics page.
+The project uses two datasets: HRDataset_v14.csv and IBM.csv, which are merged into a final dataset called HRDataset_Expanded_v2.csv. The dataset contains around 1781 rows and is composed of structured HR data. The task is risk scoring (attrition proxy). Key features include salary, department, position, performance, engagement, satisfaction, absences, and employment status.
 
-The Home page allows users to search for an employee, compute their resignation risk, view an explanation of the score, and get recommended HR actions. It also displays the top 10 most at-risk active employees.
+DATA PREPROCESSING
 
-The Analytics page provides a global overview of the data, including attrition rate, distribution of active vs terminated employees, and breakdowns by department, performance, and satisfaction. It also shows the relative importance of some variables.
+The dataset is prepared using the script dataset/Remplissage.py. The main steps are merging the two datasets, aligning column formats, generating missing values, creating synthetic employee data, converting salary from monthly to annual, and assigning managers. Some transformations include randomness, so the dataset is partly synthetic.
 
-4. Core business functions
-The main logic is implemented in src/data.js. The key functions are loadDataset(), computeRisk(), buildExplanation(), buildSolutions(), and computeAnalytics().
-Each function has a clear role: loading and structuring data, computing a risk score, generating explanations, suggesting HR actions, and calculating aggregated metrics for the dashboard.
+MODEL / SCORING SYSTEM
 
-5. Scoring logic
-The system relies on simple and interpretable HR variables such as absenteeism, satisfaction, engagement, performance, and employment status. The goal of this design is to keep the model easy to understand, fast to execute, and suitable for a hackathon-style demonstration. The focus is more on explainability than on complex machine learning.
+The project uses a rule-based scoring approach instead of a full machine learning model. The logic is implemented directly in the frontend (data.js). This approach is easy to understand, fast to execute, fully explainable, and suitable for a demo or hackathon. The score is based on variables such as absences, satisfaction, engagement, and performance.
 
-6. Running the project
-To run the frontend, you need to go into the frontend-app folder, install dependencies with npm install, and start the development server with npm run dev. You can also build the project using npm run build and preview it with npm run preview.
-To generate the dataset, you can run the Python script Remplissage.py from the dataset folder.
+EVALUATION
 
-7. Technical limitations
-The current version has several limitations. There is no backend API, no session persistence, and no authentication system. There is also no tracking of usage, no production-ready machine learning pipeline, and no automated fairness evaluation included in the repository.
+There is no formal machine learning evaluation (no accuracy, precision, recall, or F1-score). The focus is on interpretability, business logic consistency, and the ability to prioritize employees. This makes the project a proof of concept rather than a validated predictive model.
 
-8. Recommended improvements
-Several improvements can be made to move toward a production-ready system. On the backend side, an API could be developed using FastAPI or Flask, with proper endpoints for prediction and explanation.
-From an MLOps perspective, it would be useful to separate training and inference, version the models, and log predictions.
-For Responsible AI, fairness audits, SHAP or LIME explanations, and data validation should be added, along with clear warning messages in the interface.
-Finally, security can be improved by implementing role-based access control, logging, encryption of sensitive data, and compliance with regulations such as GDPR.
+ETHICAL CONSIDERATIONS
+
+To reduce risks of bias and misuse, the system is a decision-support tool only, human validation is required, sensitive attributes should not be used for decisions, and explanations are always provided with the score.
+
+CYBERSECURITY & DATA PROTECTION
+
+The dataset is anonymized or synthetic, and no real personal identifiers should be used. No secrets are stored in the repository. In a production context, access should be restricted, dashboards secured, and data properly managed.
+
+DATA ANALYSIS & VISUALIZATION
+
+The application includes analytics such as attrition rate, active vs terminated employees, and breakdowns by department, performance, and satisfaction. JavaScript is used for frontend analytics and Python for data preparation.
+
+TOOLS & ENVIRONMENT
+
+The project uses React and Vite for the frontend, JavaScript for business logic, Python (pandas, numpy) for data processing, and Node.js/npm.
+
+LIMITATIONS
+
+The project has several limitations: no backend API, no full machine learning pipeline, rule-based scoring, partly synthetic dataset, and no formal fairness evaluation. It should not be used for real HR decision-making.
+
+CONCLUSION
+
+HR Retention AI is a lightweight and explainable prototype that shows how AI can support HR teams in identifying turnover risk. It highlights explainability, responsible AI, and human-in-the-loop decision-making, and is intended for demonstration purposes only.
+
+REFERENCES
+
+React: 
+https://react.dev/
+Pandas: https://pandas.pydata.org/docs/
+Scikit-learn: https://scikit-learn.org/stable/
+GDPR: https://gdpr.eu/what-is-gdpr/
