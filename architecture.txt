@@ -1,0 +1,150 @@
+ARCHITECTURE - HR RETENTION AI
+==============================
+
+1. VUE D'ENSEMBLE
+-----------------
+Le projet se compose principalement de deux blocs :
+
+A. Préparation de données
+   - dossier : dataset/
+   - script  : Remplissage.py
+   - rôle    : fusionner et enrichir un dataset RH avec un dataset IBM
+
+B. Application de démonstration
+   - dossier : frontend-app/
+   - stack   : React + Vite
+   - rôle    : afficher les scores de risque, explications et analytics
+
+
+2. FLUX GLOBAL
+--------------
+[Sources CSV RH + IBM]
+        |
+        v
+[dataset/Remplissage.py]
+        |
+        v
+[Dataset consolidé : HRDataset_Expanded_v2.csv]
+        |
+        v
+[frontend-app/src/data.js]
+        |
+        +--> loadDataset()
+        +--> computeRisk()
+        +--> buildExplanation()
+        +--> buildSolutions()
+        +--> computeAnalytics()
+        |
+        v
+[frontend-app/src/App.jsx]
+        |
+        +--> HomePage
+        |      +--> SearchPanel
+        |      +--> ResultCard
+        |      +--> RiskTable
+        |
+        +--> AnalyticsPage
+               +--> Feature importance
+               +--> Department attrition
+               +--> Performance attrition
+               +--> Satisfaction attrition
+
+
+3. COMPOSANTS PRINCIPAUX
+------------------------
+
+3.1 dataset/Remplissage.py
+- charge deux fichiers CSV ;
+- mappe certaines colonnes IBM vers le schéma RH ;
+- complète plusieurs champs avec des valeurs générées ;
+- concatène les données ;
+- exporte une nouvelle version du dataset.
+
+
+3.2 frontend-app/src/data.js
+Rôle métier central :
+- charger les données ;
+- transformer les lignes du dataset en objets utilisables côté UI ;
+- calculer un score de risque ;
+- produire une explication textuelle ;
+- générer des recommandations ;
+- calculer les indicateurs analytics.
+
+
+3.3 frontend-app/src/App.jsx
+Rôle UI principal :
+- structure l'application ;
+- gère le router ;
+- affiche la page Home et la page Analytics ;
+- orchestre les composants de recherche, résultat et visualisation.
+
+
+3.4 frontend-app/src/main.jsx
+- point d'entrée React ;
+- monte l'application dans #root.
+
+
+4. LOGIQUE FONCTIONNELLE
+------------------------
+
+HOME PAGE
+- recherche d'un employé par EmpID ou index ;
+- calcul du score de risque ;
+- affichage des facteurs explicatifs ;
+- affichage des actions recommandées ;
+- tableau Top 10 des employés actifs à risque.
+
+ANALYTICS PAGE
+- affichage du taux global d'attrition ;
+- comparaison terminated vs active ;
+- visualisation du taux de départ par département ;
+- visualisation du taux de départ par performance ;
+- visualisation du taux de départ par satisfaction ;
+- affichage d'une importance relative des variables.
+
+
+5. CHOIX D'ARCHITECTURE
+-----------------------
+- Frontend léger, simple à déployer ;
+- Démonstration orientée lisibilité métier ;
+- Pas de backend temps réel dans la version actuelle ;
+- Logique de scoring intégrée côté frontend pour une démo rapide.
+
+
+6. LIMITES D'ARCHITECTURE
+-------------------------
+- Le scoring n'est pas servi par une API dédiée ;
+- Le dépôt ne montre pas une pipeline d'entraînement complète ;
+- La sécurité d'accès, l'authentification et l'audit des usages ne sont pas implémentés ;
+- L'audit fairness n'est pas industrialisé.
+
+
+7. EVOLUTION CIBLE
+------------------
+Architecture recommandée pour une V2 :
+
+[Data Lake / SIRH anonymisé]
+        |
+        v
+[Pipeline de préparation Python]
+        |
+        v
+[Entraînement modèle + audit fairness + SHAP]
+        |
+        v
+[API FastAPI / Flask]
+        |
+        v
+[Frontend React]
+        |
+        v
+[Dashboard RH sécurisé]
+
+Ajouts recommandés :
+- authentification RH ;
+- journalisation ;
+- API de prédiction ;
+- stockage de versions de modèles ;
+- monitoring ;
+- audit d'équité ;
+- mesure de frugalité.

@@ -1,106 +1,231 @@
-# HackAI
 # HR Retention AI
 
-## Notre projet
-
-On a développé **HR Retention AI**, une application web qui aide à repérer les employés présentant un **risque plus élevé de démission**.
-
-L’idée n’est pas de remplacer les RH, mais de leur donner un **outil d’appui** pour mieux prioriser les suivis, comprendre certaines situations à risque et agir plus tôt.
-
-Notre projet repose sur deux axes principaux :
-
-- **l’éthique**, pour éviter les usages injustes ou discriminatoires ;
-- **l’explicabilité**, pour que les résultats affichés soient compréhensibles et pas seulement techniques.
+Application web d’aide à la décision RH pour identifier les employés présentant un risque plus élevé de départ volontaire, expliquer les facteurs de risque observés et suggérer des actions de prévention.
 
 ---
 
-## Le problème auquel on répond
+## 1. Contexte
 
-Dans une entreprise, les départs volontaires peuvent coûter cher : perte de compétences, désorganisation, temps de recrutement, baisse de motivation dans les équipes.
+Dans beaucoup d’organisations, le turnover entraîne des coûts importants : perte de compétences, baisse de continuité dans les équipes, coûts de recrutement et temps de montée en compétence.
 
-On a donc choisi de travailler sur une question simple :
+Notre projet **HR Retention AI** propose une solution simple et responsable pour aider les RH à :
+- repérer les profils les plus à risque ;
+- comprendre les facteurs qui influencent ce risque ;
+- prioriser des actions de rétention ;
+- visualiser des indicateurs globaux sur le dataset.
 
-**comment repérer plus tôt les situations où un employé semble plus susceptible de quitter l’entreprise ?**
-
-Le but est d’aider les RH à anticiper, pas à prendre une décision automatique.
-
----
-
-## Ce que fait l’application
-
-Le site permet de consulter les résultats d’un modèle entraîné au préalable sur des données RH.
-
-Pour chaque employé, l’application affiche :
-
-- un **pourcentage de risque de démission** ;
-- un **niveau de risque** ;
-- quelques **facteurs qui expliquent le score** ;
-- une **suggestion d’action RH** formulée simplement.
-
-Les profils peuvent ensuite être **triés par ordre décroissant de risque**, ce qui permet d’identifier rapidement les cas les plus prioritaires.
+L’outil est conçu comme une **aide à la décision**, et non comme un système de décision automatique.
 
 ---
 
-## Ce qu’on a choisi de mettre en avant
+## 2. Objectif du projet
 
-### 1. L’éthique
-
-Dans un projet RH, on ne peut pas se contenter de faire une prédiction “efficace”.  
-Il faut aussi faire attention à ce que le système ne renforce pas des biais.
-
-C’est pour ça que notre approche repose sur plusieurs principes :
-
-- les variables sensibles ne doivent pas servir directement à prendre la décision ;
-- le score affiché reste une **aide à la décision** ;
-- une **validation humaine** est toujours nécessaire avant toute action.
-
-Autrement dit : le modèle signale un risque, mais il ne décide jamais à la place d’un recruteur ou d’un responsable RH.
-
-### 2. L’explicabilité
-
-On ne voulait pas afficher un score brut sans contexte.  
-Dans un usage RH, ce serait peu utile et difficile à défendre.
-
-On a donc choisi d’accompagner chaque résultat avec :
-- une lecture simple du niveau de risque ;
-- des éléments d’explication ;
-- une recommandation concrète et compréhensible.
-
-Le but est que même une personne non technique puisse comprendre ce que le système essaye de dire.
+L’objectif est de construire une interface de démonstration capable de :
+- charger un dataset RH anonymisé ;
+- calculer un **score de risque de départ** à partir de variables RH simples ;
+- afficher les employés actifs les plus à risque ;
+- expliquer les raisons possibles du score ;
+- proposer des actions RH concrètes ;
+- fournir une page d’analytics pour visualiser les tendances du dataset.
 
 ---
 
-## Comment le projet fonctionne
+## 3. Périmètre réel du code
 
-Le projet est organisé en deux parties :
-
-### Frontend
-Le frontend est l’interface web.  
-C’est la partie visible par l’utilisateur. Elle permet de :
-
-- afficher les employés analysés ;
-- trier les résultats par niveau de risque ;
-- filtrer les profils ;
-- lire les explications et les recommandations RH.
-
-### Backend
-Le backend gère la logique métier et la prédiction.  
-Il charge le modèle entraîné en Python, traite les données et renvoie les résultats au frontend.
-
-### Modèle
-Le modèle de machine learning a été entraîné en amont sur une base RH.  
-Il calcule une **probabilité de démission** à partir des caractéristiques disponibles dans les données.
-
----
-
-## Structure du projet
+Le dépôt contient plusieurs éléments, mais la partie exécutable principale côté interface est le projet :
 
 ```text
-hr_attrition_ai_project/
-├── backend/
-├── frontend/
-├── model/
-├── sample_data/
-├── requirements.txt
-├── docker-compose.yml
-└── README.md
+frontend-app/
+```
+
+C’est ce projet Vite + React qui contient l’application affichée à l’utilisateur.
+
+Le fichier `frontend` présent à la racine ressemble à un prototype antérieur ou à une version non intégrée dans le projet Vite. Il ne constitue pas l’entrée principale de l’application.
+
+Le dossier `dataset/` contient un script Python de préparation / enrichissement des données.
+
+---
+
+## 4. Persona et cas d’usage
+
+### Persona principal
+**Responsable RH / Talent Manager**
+
+Cette personne souhaite repérer les situations de départ potentiel avant qu’elles ne deviennent critiques, tout en gardant une lecture compréhensible et justifiable des résultats.
+
+### Cas d’usage
+1. Rechercher un employé par `EmpID` ou index.
+2. Consulter son score de risque de départ.
+3. Lire une explication synthétique des facteurs de risque.
+4. Obtenir des recommandations RH simples.
+5. Voir les employés actifs les plus à risque.
+6. Explorer des statistiques globales sur le dataset.
+
+---
+
+## 5. Fonctionnalités implémentées
+
+### Page Home
+- recherche d’un employé par identifiant ;
+- calcul d’un score de risque ;
+- affichage d’une fiche employé ;
+- explication textuelle du score ;
+- recommandations d’actions ;
+- tableau des 10 employés actifs les plus à risque.
+
+### Page Analytics
+- taux global d’attrition ;
+- comparaison employés actifs vs terminés ;
+- taux de départ par département ;
+- taux de départ par performance ;
+- taux de départ par satisfaction ;
+- importance relative de certaines variables.
+
+---
+
+## 6. Architecture fonctionnelle
+
+### Frontend
+Le frontend est développé avec **React** et **Vite**.
+
+Fichiers principaux :
+- `frontend-app/src/App.jsx` : structure des pages, navigation, composants UI ;
+- `frontend-app/src/main.jsx` : point d’entrée React ;
+- `frontend-app/src/index.css` : styles globaux ;
+- `frontend-app/src/data.js` : chargement des données, calcul du risque, explications, analytics.
+
+### Données
+Les données utilisées par l’application sont chargées côté frontend depuis `data.js`.
+
+### Préparation des données
+Le script :
+
+```python
+dataset/Remplissage.py
+```
+
+sert à enrichir / transformer un dataset RH en fusionnant un dataset RH existant avec un dataset IBM pour produire une version consolidée :
+- lecture de `HRDataset_v14.csv` ;
+- lecture de `IBM.csv` ;
+- génération de colonnes compatibles ;
+- export de `HRDataset_Expanded_v2.csv`.
+
+---
+
+## 7. Logique de scoring
+
+Dans l’état actuel du code, le score de risque affiché est calculé à partir de variables RH structurées présentes dans le dataset, notamment :
+- absences ;
+- satisfaction ;
+- engagement ;
+- performance ;
+- retards / signaux comportementaux selon les champs disponibles.
+
+Le projet met l’accent sur la **lisibilité métier** du score plutôt que sur une pipeline ML industrialisée complète exposée dans ce dépôt.
+
+Autrement dit, l’application démontre une logique d’**IA explicable orientée RH**, avec restitution compréhensible des causes et des actions, même si le dépôt ne montre pas ici un notebook d’entraînement complet ni un backend de serving dédié.
+
+---
+
+## 8. IA responsable
+
+### Éthique
+- Le score est présenté comme une aide à la décision.
+- Une validation humaine reste nécessaire avant toute action RH.
+- Les attributs sensibles doivent être manipulés avec prudence et ne pas servir à discriminer.
+
+### Explicabilité
+- Le score affiché est accompagné d’une explication textuelle.
+- L’interface ne montre pas uniquement un pourcentage brut.
+- Les RH peuvent relier le score à des signaux concrets.
+
+### Frugalité
+- L’application repose sur une architecture légère côté frontend.
+- Le calcul présenté est simple à exécuter et adapté à une démonstration frugale.
+
+### Cybersécurité / conformité
+- Le projet se base sur des données RH anonymisées / synthétiques.
+- Il faut éviter d’exposer des données personnelles réelles dans le dépôt.
+- Les variables sensibles doivent être protégées et encadrées.
+
+---
+
+## 9. Structure du projet
+
+```text
+louispir-hackai/
+├── README.md
+├── frontend                      # prototype / ancienne version
+├── dataset/
+│   └── Remplissage.py            # préparation / enrichissement de données
+└── frontend-app/                 # application principale React + Vite
+    ├── README.md
+    ├── eslint.config.js
+    ├── index.html
+    ├── package.json
+    ├── vite.config.js
+    └── src/
+        ├── App.css
+        ├── App.jsx
+        ├── data.js
+        ├── index.css
+        └── main.jsx
+```
+
+---
+
+## 10. Installation et lancement
+
+### Prérequis
+- Node.js 18+
+- npm
+
+### Lancer le frontend
+Depuis le dossier `frontend-app/` :
+
+```bash
+npm install
+npm run dev
+```
+
+Puis ouvrir l’URL locale indiquée par Vite.
+
+### Build de production
+```bash
+npm run build
+npm run preview
+```
+
+---
+
+## 11. Limites actuelles
+
+- Pas de backend Python branché en temps réel sur le frontend.
+- Pas de pipeline d’entraînement complète documentée dans le dépôt.
+- Le score repose sur une logique implémentée dans `data.js`, sans exposer ici tout le cycle MLOps.
+- La fairness est évoquée dans l’interface et la documentation, mais l’audit d’équité complet reste à formaliser.
+- Les résultats ne doivent pas être utilisés pour prendre une décision automatique sur un salarié.
+
+---
+
+## 12. Pistes d’amélioration
+
+- ajouter un backend API pour servir un vrai modèle entraîné ;
+- intégrer SHAP ou LIME pour une explicabilité plus formelle ;
+- ajouter un audit d’équité par sous-groupes ;
+- mesurer la frugalité avec CodeCarbon ;
+- renforcer la documentation des données et du modèle ;
+- connecter une base de données RH anonymisée ;
+- ajouter gestion des rôles et journalisation des accès.
+
+---
+
+## 13. Conclusion
+
+**HR Retention AI** est une démonstration d’outil RH responsable orienté :
+- **prévention du turnover** ;
+- **explicabilité des scores** ;
+- **lecture opérationnelle pour les RH** ;
+- **sensibilisation aux enjeux d’éthique, de conformité et de frugalité**.
+
+Le projet ne remplace pas le jugement humain. Il aide les RH à mieux prioriser et à ouvrir les bonnes discussions au bon moment.

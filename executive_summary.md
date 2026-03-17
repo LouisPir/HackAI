@@ -1,0 +1,11 @@
+HR Retention AI addresses a major challenge for organizations: the loss of time, resources, and know-how caused by unexpected employee departures. In response, HR teams need simple and effective tools to detect early signs of disengagement and take action before attrition becomes critical.
+
+With this in mind, HR Retention AI is designed as a lightweight, transparent, and explainable web application, positioned as a decision-support tool. It enables HR teams to identify employees at higher risk of leaving, understand the factors driving that risk, prioritize retention actions, and explore overall attrition analytics. The demo highlights several key features, including employee lookup by ID, a resignation risk score, explanations of the main contributing factors, suggested HR actions, a table of the most at-risk employees, and an analytics dashboard covering the full dataset.
+
+Responsible AI is at the core of the project. The system is not intended to automate HR decisions, but rather to support professionals in their analysis. It emphasizes explainability, ethical awareness, data anonymization, and a lightweight, resource-efficient technical approach.
+
+From a technical perspective, the current solution relies on a frontend built with React and Vite, combined with a simple scoring logic based on structured HR variables such as absenteeism, engagement, satisfaction, and performance. A Python script is also used to enrich and consolidate the underlying dataset.
+
+Overall, HR Retention AI delivers value by helping HR teams shift from reactive attrition management to a more proactive, structured, and explainable approach. However, the project still has some limitations: there is no production-ready backend, no fully implemented machine learning pipeline, fairness evaluation remains to be formalized, and the tool should not be used for automated HR decision-making.
+
+Next steps include developing a backend API, integrating advanced explainability methods such as SHAP or LIME, conducting fairness audits, measuring the solution’s energy footprint, and strengthening security, access control, and governance.
