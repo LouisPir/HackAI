@@ -1,0 +1,16 @@
+# Google Clasp private credentials
+.clasp.json
+
+# Node modules (huge folders you don't need on GitHub)
+node_modules/
+npm-debug.log*
+
+# Python environment & cache
+__pycache__/
+*.py[cod]
+.venv/
+.env
+
+# Windows system files
+Thumbs.db
+desktop.ini
